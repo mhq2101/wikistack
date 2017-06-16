@@ -18,11 +18,16 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-models.db.sync({force: true}).then(() => {
+app.use(express.static('public'))
+
+models.db.sync({}).then(() => {
     app.listen(3000, () => {
         console.log('yo server be listenin on 3000');
     });
 })
 .catch(console.error);
 
+
+
 app.use('/', routes);
+
