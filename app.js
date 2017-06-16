@@ -26,5 +26,3 @@ models.db.sync({force: true}).then(() => {
 .catch(console.error);
 
 app.use('/', routes);
-
-

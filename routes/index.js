@@ -5,6 +5,7 @@ const models = require('../models');
 const wikiRouter = require('./wiki');
 const userRouter = require('./user');
 
+// router.use('/')
 
 router.use('/wiki', wikiRouter);
 
