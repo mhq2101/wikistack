@@ -20,13 +20,11 @@ var User = db.define('user', {
 var Page = db.define('page', {
     title:  {
         type:Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
     urlTitle: {
         type: Sequelize.STRING,
-        route: function() {
-            return '/wiki/' + this.getDataValue('urlTitle');
-        },
         // validate: {
         //     isUrl: true
         // },
@@ -43,7 +41,14 @@ var Page = db.define('page', {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     }
+    
 
+}, {
+    getterMethods: {
+        route: function() {
+            return '/wiki/' + this.getDataValue('urlTitle');
+        }
+    }
 });
 
 Page.hook('beforeValidate', function(page) {
@@ -54,6 +59,8 @@ Page.hook('beforeValidate', function(page) {
         page.urlTitle = Math.random().toString(36).substring(2,7);
     }
 })
+
+Page.belongsTo(User, { as: 'author' });
 
 module.exports = {
     db,
