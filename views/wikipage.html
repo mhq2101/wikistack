@@ -7,7 +7,7 @@
   <div> tags:
     <ul class="list-inline">
     {% for tag in page.tags %}
-      <li><a href="/users/{{author.id}}">{{tag}}</a></li>
+      <li><a href="/wiki/search?tag={{tag}}">{{tag}}</a></li>
     {% endfor %}
     <!-- PLACEHOLDER LIST OF PAGES -->
   </ul>

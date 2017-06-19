@@ -64,6 +64,17 @@ Page.hook('beforeValidate', function (page) {
 });
 
 Page.belongsTo(User, { as: 'author' });
+Page.findByTag = function(tagArr) {
+    var pagePromise = Page.findAll({
+        where: {
+            tags: {
+                $overlap: tagArr
+            }
+        }
+    });
+
+    return pagePromise;
+}
 
 module.exports = {
     db,

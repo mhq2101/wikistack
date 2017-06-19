@@ -14,9 +14,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/search', function(req, res, next) {
-    models.Page.findAll({
-        
-    })
+    res.render('tagsearchpage');
 })
 
 router.use('/wiki', wikiRouter);

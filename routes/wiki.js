@@ -41,6 +41,18 @@ router.get('/add', function (req, res, next) {
     res.render('addpage');
 });
 
+router.get('/search', function (req, res, next) {
+    Page.findByTag(req.query.tag.split(' ')).then((result) => {
+        res.render('index', {
+            pages: result
+        })
+    })
+
+
+
+
+});
+
 router.get('/:page', function (req, res, next) {
     
     var pagePromise = Page.findOne({
@@ -75,5 +87,7 @@ router.get('/:page', function (req, res, next) {
         })
         .catch(next);
 });
+
+
 
 module.exports = router;
