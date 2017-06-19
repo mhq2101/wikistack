@@ -5,9 +5,6 @@ var models = require('../models');
 var Page = models.Page;
 var User = models.User;
 
-
-
-
 // base directory is /wiki/
 router.get('/', function (req, res, next) {
 
@@ -28,8 +25,8 @@ router.post('/', function (req, res, next) {
             content: req.body.content,
             status: req.body.status
         });
-        return page.save().then((page) => {
-            return page.setAuthor(user);
+        return page.save().then((pageResult) => {
+            return pageResult.setAuthor(user);
         });
     })
         .then((page) => {
@@ -50,7 +47,7 @@ router.get('/:page', function (req, res, next) {
         }
     })
         .then((result) => {
-            res.render('wikiPage', {
+            res.render('wikipage', {
                 titles: result.title,
                 urlTitle: result.urlTitle,
                 content: result.content
@@ -58,7 +55,6 @@ router.get('/:page', function (req, res, next) {
             // res.json(result);
         })
         .catch(next);
-
 });
 
 module.exports = router;

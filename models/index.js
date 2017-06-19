@@ -1,7 +1,6 @@
 var Sequelize = require('sequelize');
 var db = new Sequelize('postgres://localhost:5432/wikistack');
 
-
 var User = db.define('user', {
     name: {
         type: Sequelize.STRING,
@@ -18,8 +17,8 @@ var User = db.define('user', {
 });
 
 var Page = db.define('page', {
-    title:  {
-        type:Sequelize.STRING,
+    title: {
+        type: Sequelize.STRING,
         allowNull: false,
         unique: true
     },
@@ -35,30 +34,30 @@ var Page = db.define('page', {
         allowNull: false
     },
     status: {
-        type:Sequelize.ENUM('open', 'closed')
+        type: Sequelize.ENUM('open', 'closed')
     },
     date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     }
-    
+
 
 }, {
-    getterMethods: {
-        route: function() {
-            return '/wiki/' + this.getDataValue('urlTitle');
+        getterMethods: {
+            route: function () {
+                return '/wiki/' + this.getDataValue('urlTitle');
+            }
         }
-    }
-});
+    });
 
-Page.hook('beforeValidate', function(page) {
+Page.hook('beforeValidate', function (page) {
     if (page.title) {
         page.urlTitle = page.title.replace(/\s+/g, '_').replace(/\W/g, '');
     }
     else {
-        page.urlTitle = Math.random().toString(36).substring(2,7);
+        page.urlTitle = Math.random().toString(36).substring(2, 7);
     }
-})
+});
 
 Page.belongsTo(User, { as: 'author' });
 
@@ -67,4 +66,3 @@ module.exports = {
     Page,
     User
 };
-
