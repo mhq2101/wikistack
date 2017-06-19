@@ -12,18 +12,24 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/:id', function (req, res, next) {
-    models.Page.findOne({
+
+    var userPromise = models.User.findById(req.params.id);
+    var pagesPromise = models.Page.findAll({
         where: {
-            id: req.params.id
+            authorId: req.params.id
         }
-    })
+    });
+    Promise.all([
+        userPromise,
+        pagesPromise
+    ])
         .then((result) => {
+            var user = result[0];
+            var pages = result[1];
             res.render('apage', {
-                titles: result.title,
-                urlTitle: result.urlTitle,
-                content: result.content
+                user,
+                pages
             });
-            // res.json(result);
         })
         .catch(next);
 

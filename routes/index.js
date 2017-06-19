@@ -13,6 +13,12 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.get('/search', function(req, res, next) {
+    models.Page.findAll({
+        
+    })
+})
+
 router.use('/wiki', wikiRouter);
 router.use('/users', userRouter);
 

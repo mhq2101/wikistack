@@ -23,7 +23,8 @@ router.post('/', function (req, res, next) {
         var page = Page.build({
             title: req.body.title,
             content: req.body.content,
-            status: req.body.status
+            status: req.body.status,
+            tags: req.body.tags.split(' ')
         });
         return page.save().then((pageResult) => {
             return pageResult.setAuthor(user);
@@ -41,16 +42,34 @@ router.get('/add', function (req, res, next) {
 });
 
 router.get('/:page', function (req, res, next) {
-    Page.findOne({
+    
+    var pagePromise = Page.findOne({
         where: {
             urlTitle: req.params.page
         }
     })
+    var userPromise = pagePromise.then((result) =>{
+        var user = User.findOne({
+            where: {
+                id: result.authorId
+            }
+        })
+        return user;
+    })
+        
+    Promise.all([
+        pagePromise,
+        userPromise
+    ])
         .then((result) => {
+            var page = result[0];
+            var user = result[1];
             res.render('wikipage', {
-                titles: result.title,
-                urlTitle: result.urlTitle,
-                content: result.content
+                // titles: page.title,
+                // urlTitle: page.urlTitle,
+                // content: page.content
+                page,
+                user
             });
             // res.json(result);
         })

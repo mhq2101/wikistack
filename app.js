@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 
 app.use(express.static('public'));
 
-models.db.sync({}).then(() => {
+models.db.sync({force: true}).then(() => {
     app.listen(3000, () => {
         console.log('yo server be listenin on 3000');
     });
