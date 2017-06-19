@@ -48,9 +48,6 @@ router.get('/search', function (req, res, next) {
         })
     })
 
-
-
-
 });
 
 router.get('/:page', function (req, res, next) {
@@ -86,6 +83,31 @@ router.get('/:page', function (req, res, next) {
             // res.json(result);
         })
         .catch(next);
+});
+
+router.get('/:page/similar', function (req, res, next) {
+    Page.findOne({
+        where: {
+            urlTitle: req.params.page
+        }
+    })
+    .then((result) => {
+        result.findSimilar().then((result) => {
+            res.render('index', {
+                pages: result
+            });
+        });  
+    });
+
+    
+
+
+    // Page.findByTag(req.query.tag.split(' ')).then((result) => {
+    //     res.render('index', {
+    //         pages: result
+    //     })
+    // })
+
 });
 
 

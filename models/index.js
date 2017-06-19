@@ -51,6 +51,23 @@ var Page = db.define('page', {
             route: function () {
                 return '/wiki/' + this.getDataValue('urlTitle');
             }
+        },
+        instanceMethods: {
+            findSimilar: function () {
+                var pagePromise = Page.findAll({
+                    where: {
+                        tags: {
+                            $overlap: this.tags
+                        },
+                        $and: {
+                            id: {
+                                $ne: this.id
+                            }
+                        }
+                    }
+                });
+                return pagePromise;
+            }
         }
     });
 
@@ -64,7 +81,7 @@ Page.hook('beforeValidate', function (page) {
 });
 
 Page.belongsTo(User, { as: 'author' });
-Page.findByTag = function(tagArr) {
+Page.findByTag = function (tagArr) {
     var pagePromise = Page.findAll({
         where: {
             tags: {
